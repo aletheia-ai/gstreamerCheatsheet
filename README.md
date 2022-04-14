@@ -118,3 +118,9 @@ Create live stream and stream it into Facebook Live streaming service
 ```
 gst-launch-1.0 flvmux name=mux streamable=true ! rtmpsink location="<rtmp_url_for_fblive>" videotestsrc is-live=true ! "video/x-raw,width=1280,height=720,framerate=30/1" ! identity sync=true ! x264enc bitrate=2500 key-int-max=60  ! video/x-h264,profile=high ! h264parse ! queue ! mux. audiotestsrc is-live=true ! audio/x-raw,rate=44100,channels=2 ! identity sync=true ! voaacenc bitrate=128000 ! queue ! mux.
 ```
+
+Record RTSP stream in MPEGTS format without encoding/decoding
+----
+```
+gst-launch-1.0  rtspsrc location="rtsp://admin:abc12345@192.168.100.9:554/Streaming/Channels/102" ! application/x-rtp, media=video, encoding-name=H264  ! queue ! rtph264depay ! h264parse ! mpegtsmux ! filesink location=a.ts
+```
